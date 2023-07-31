@@ -4,6 +4,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.gpu
+    depends_on:
+      - db
+    env_file:
+      - .env
     ports:
       - "8000:8000"
     volumes:
@@ -16,3 +20,15 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [ gpu ]
+
+  db:
+    image: postgres:latest
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
