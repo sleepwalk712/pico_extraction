@@ -3,8 +3,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.db.base import Base
+from app.core.config import TestConfig
 
-TEST_DATABASE_URL = "postgresql://test_user:test_password@test_db:5432/test_db"
+TEST_DATABASE_URL = TestConfig.TEST_DATABASE_URL
 
 
 @pytest.fixture(scope="module")
