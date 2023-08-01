@@ -26,9 +26,9 @@ Make sure to replace `<Your-Postgres-User>`, `<Your-Postgres-Password>`, and `<Y
 
 If you intend to run the project on a CPU, you can use the provided `docker-compose-cpu.yml` file. Simply navigate to the project directory and run:
 
-\`\`\`bash
+```bash
 docker-compose -f docker-compose-cpu.yml up
-\`\`\`
+```
 
 ### GPU Version
 
@@ -36,9 +36,9 @@ For those looking to utilize the GPU for computations, the project supports NVID
 
 To start the project with GPU support, use the `docker-compose-gpu.yml` file. Run the following command in the project directory:
 
-\`\`\`bash
+```bash
 docker-compose -f docker-compose-gpu.yml up
-\`\`\`
+```
 
 Make sure your NVIDIA driver is compatible and properly installed.
 
