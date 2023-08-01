@@ -16,4 +16,4 @@ class Task(Base):
     description = Column(String)
     results = relationship('Result', back_populates='task')
     version_id = Column(Integer, ForeignKey('model_versions.version_id'))
-    model_version = relationship('ModelVersion')
+    model_version = relationship('ModelVersion', back_populates='tasks')

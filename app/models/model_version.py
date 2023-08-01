@@ -1,6 +1,7 @@
 import datetime
 
 from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.orm import relationship
 
 from app.db.base import Base
 
@@ -12,3 +13,4 @@ class ModelVersion(Base):
     version_number = Column(String, nullable=False)
     path = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    tasks = relationship('Task', back_populates='model_version')

@@ -13,5 +13,3 @@ class Result(Base):
     data = Column(Text, nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     task = relationship('Task', back_populates='results')
-    version_id = Column(Integer, ForeignKey('model_versions.version_id'))
-    model_version = relationship('ModelVersion')
