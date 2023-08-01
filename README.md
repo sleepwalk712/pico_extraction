@@ -13,13 +13,13 @@ This project leverages Docker Compose to orchestrate its environment. Depending 
 ### Environment Variables
 
 Before starting the project, you need to create a `.env` file in the project root directory with the following content:
-
+```
 POSTGRES_USER=<Your-Postgres-User>
 POSTGRES_PASSWORD=<Your-Postgres-Password>
 POSTGRES_DB=<Your-Postgres-Database-Name>
 POSTGRES_HOST=db
 POSTGRES_PORT=5432
-
+```
 Make sure to replace `<Your-Postgres-User>`, `<Your-Postgres-Password>`, and `<Your-Postgres-Database-Name>` with your specific Postgres credentials.
 
 ### CPU Version
