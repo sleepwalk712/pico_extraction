@@ -13,9 +13,12 @@ RUN apt-get update && apt-get install -y \
   libx11-6 \
   && rm -rf /var/lib/apt/lists/*
 
-# Create a working directory.
+# Set the working directory
 RUN mkdir /app
 WORKDIR /app
+
+# Set PYTHONPATH to include the app directory
+ENV PYTHONPATH=/app
 
 # Copy local code into the container.
 COPY . /app
