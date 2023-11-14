@@ -13,4 +13,5 @@ def test_ner_model():
 
     outputs = ner_model.predict(inputs)
 
-    assert isinstance(outputs, torch.Tensor)
+    assert isinstance(outputs, list)
+    assert all(isinstance(prediction, int) for prediction in outputs)

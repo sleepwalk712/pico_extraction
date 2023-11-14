@@ -27,7 +27,9 @@ class NERModel:
     def predict(self, inputs):
         with torch.no_grad():
             outputs = self.model(**inputs)
-        return outputs.logits
+        logits = outputs.logits
+        predictions = torch.argmax(logits, dim=-1).squeeze().tolist()
+        return predictions
 
     def save_model(self, path):
         self.model.save_pretrained(path)

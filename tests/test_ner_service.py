@@ -1,17 +1,24 @@
 import os
 import shutil
 
-import torch
-
 from app.services.ner_service import NERService
 
 
 def test_ner_service_predict():
-    ner_service = NERService()
+    label_map = {
+        0: 'B-DRUG',
+        1: 'I-DRUG',
+        2: 'B-DISEASE',
+        3: 'I-DISEASE',
+        4: 'O',
+    }
+    ner_service = NERService(label_map)
     text = "Sunitinib is a tyrosine kinase inhibitor"
     result = ner_service.predict(text)
 
-    assert isinstance(result, torch.Tensor)
+    assert isinstance(result, list), "Result should be a list"
+    assert all(isinstance(label, str)
+               for label in result), "All items in result should be strings"
 
 
 def test_ner_service_fine_tune():
@@ -20,7 +27,7 @@ def test_ner_service_fine_tune():
     texts = ["Sunitinib is a tyrosine kinase inhibitor",
              "This is another example"]
     texts = [text.split() for text in texts]
-    labels = [[1, 2, 2, 0, 0, 0, 0, 0], [0, 0, 0, 0]]
+    labels = [[1, 2, 2, 0, 0, 0], [0, 0, 0, 0]]
 
     ner_service.fine_tune(
         texts,
