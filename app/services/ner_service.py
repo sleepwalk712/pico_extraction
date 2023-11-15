@@ -6,19 +6,18 @@ from app.core.ner_model import NERModel
 
 
 class NERService:
-    def __init__(self, label_map=None):
+    def __init__(self):
         self.ner_model = NERModel()
-        self.label_map = label_map
 
     def align_predictions(self, predictions, word_ids):
         aligned_labels = []
         for idx, word_id in enumerate(word_ids):
             if word_id is None:
-                aligned_labels.append("O")
+                next
             elif idx == 0 or word_id != word_ids[idx - 1]:
-                aligned_labels.append(self.label_map[predictions[word_id]])
+                aligned_labels.append(predictions[word_id])
             else:
-                aligned_labels.append("O")
+                next
         return aligned_labels
 
     def predict(self, text):

@@ -5,19 +5,12 @@ from app.services.ner_service import NERService
 
 
 def test_ner_service_predict():
-    label_map = {
-        0: 'B-DRUG',
-        1: 'I-DRUG',
-        2: 'B-DISEASE',
-        3: 'I-DISEASE',
-        4: 'O',
-    }
-    ner_service = NERService(label_map)
+    ner_service = NERService()
     text = "Sunitinib is a tyrosine kinase inhibitor"
     result = ner_service.predict(text)
 
     assert isinstance(result, list), "Result should be a list"
-    assert all(isinstance(label, str)
+    assert all(isinstance(label, int)
                for label in result), "All items in result should be strings"
 
 
