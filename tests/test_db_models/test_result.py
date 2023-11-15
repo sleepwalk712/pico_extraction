@@ -1,11 +1,11 @@
-from app.models import Result, Task, ModelVersion
+from app.models.db_models import Result, Task, ModelVersion
 
 
 def test_create_and_retrieve_result(db_setup):
     session = db_setup
 
     model_version = ModelVersion(
-        model_name="model_name_example",
+        ml_model_name="ml_model_name_example",
         version_number="1.0",
         path="/path/to/model",
     )

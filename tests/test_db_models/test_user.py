@@ -1,4 +1,4 @@
-from app.models import User
+from app.models.db_models import User
 
 
 def test_create_and_retrieve_user(db_setup):

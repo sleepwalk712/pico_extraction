@@ -1,11 +1,11 @@
-from app.models import Task, ModelVersion
+from app.models.db_models import Task, ModelVersion
 
 
 def test_create_and_retrieve_task(db_setup):
     session = db_setup
 
     model_version = ModelVersion(
-        model_name="model_name_example",
+        ml_model_name="ml_model_name_example",
         version_number="1.0",
         path="/path/to/model",
     )
@@ -21,4 +21,4 @@ def test_create_and_retrieve_task(db_setup):
     assert retrieved_task is not None
     assert retrieved_task.type == "predict"
     assert retrieved_task.status == "pending"
-    assert retrieved_task.model_version.model_name == "model_name_example"
+    assert retrieved_task.model_version.ml_model_name == "ml_model_name_example"
