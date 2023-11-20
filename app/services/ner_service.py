@@ -28,11 +28,11 @@ class NERService:
         aligned_predictions = self.align_predictions(predictions, word_ids)
         return aligned_predictions
 
-    def fine_tune(self, texts, labels, epochs=3, model_path="ner_model"):
+    def fine_tune(self, texts, labels, epochs=3, ml_model_path="ner_model"):
         optimizer = AdamW(self.ner_model.model.parameters(), lr=5e-5)
 
         training_args = TrainingArguments(
-            output_dir=model_path,
+            output_dir=ml_model_path,
             per_device_train_batch_size=32,
             num_train_epochs=epochs,
             logging_dir='./logs',
@@ -47,4 +47,4 @@ class NERService:
         )
 
         trainer.train()
-        self.ner_model.save_model(model_path)
+        self.ner_model.save_model(ml_model_path)

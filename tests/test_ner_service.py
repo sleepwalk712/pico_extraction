@@ -17,16 +17,17 @@ def test_ner_service_predict():
 def test_ner_service_fine_tune():
     ner_service = NERService()
 
-    texts = ["Sunitinib is a tyrosine kinase inhibitor",
-             "This is another example"]
-    texts = [text.split() for text in texts]
+    texts = [
+        ["Sunitinib", "is", "a", "tyrosine", "kinase", "inhibitor",],
+        ["This", "is", "another", "example",],
+    ]
     labels = [[1, 2, 2, 0, 0, 0], [0, 0, 0, 0]]
 
     ner_service.fine_tune(
         texts,
         labels,
         epochs=1,
-        model_path='test_ner_service',
+        ml_model_path='test_ner_service',
     )
 
     assert os.path.exists('test_ner_service'), "Model file was not saved"

@@ -3,11 +3,11 @@ import torch
 
 
 class NERModel:
-    def __init__(self, model_path=None):
+    def __init__(self, ml_model_path=None):
         self.tokenizer = AutoTokenizer.from_pretrained(
-            model_path if model_path else 'michiyasunaga/BioLinkBERT-base')
+            ml_model_path if ml_model_path else 'michiyasunaga/BioLinkBERT-base')
         self.model = AutoModelForTokenClassification.from_pretrained(
-            model_path if model_path else 'michiyasunaga/BioLinkBERT-base', num_labels=5)
+            ml_model_path if ml_model_path else 'michiyasunaga/BioLinkBERT-base', num_labels=5)
 
     def encode(self, texts, labels=None):
         encoding = self.tokenizer(
