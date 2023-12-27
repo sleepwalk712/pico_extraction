@@ -1,20 +1,35 @@
+from typing import TypedDict, Optional
+
 from torch.utils.data import Dataset
 import torch
+from transformers import PreTrainedTokenizer  # type: ignore
+
+
+class EncodingDict(TypedDict):
+    input_ids: torch.Tensor
+    attention_mask: torch.Tensor
+    labels: torch.Tensor
 
 
 class NERDataset(Dataset):
-    def __init__(self, texts, labels, tokenizer, max_length=512):
+    def __init__(
+        self,
+        texts: list[list[str]],
+        labels: list[list[int]],
+        tokenizer: PreTrainedTokenizer,
+        max_length: int = 512,
+    ) -> None:
         self.texts = texts
         self.labels = labels
         self.tokenizer = tokenizer
         self.max_length = max_length
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.texts)
 
-    def __getitem__(self, idx):
-        text = self.texts[idx]
-        labels = self.labels[idx]
+    def __getitem__(self, idx: int) -> EncodingDict:
+        text: list[str] = self.texts[idx]
+        labels: list[int] = self.labels[idx]
 
         encoding = self.tokenizer(
             text,
@@ -25,10 +40,10 @@ class NERDataset(Dataset):
             return_tensors="pt"
         )
 
-        word_ids = encoding.word_ids(batch_index=0)
+        word_ids: list[int] = encoding.word_ids(batch_index=0)
 
-        previous_word_idx = None
-        label_ids = []
+        previous_word_idx: Optional[int] = None
+        label_ids: list[int] = []
         for word_idx in word_ids:
             if word_idx is None:
                 label_ids.append(-100)

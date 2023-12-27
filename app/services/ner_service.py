@@ -1,4 +1,5 @@
-from transformers import Trainer, TrainingArguments
+from typing import Optional
+from transformers import Trainer, TrainingArguments  # type: ignore
 from torch.optim import AdamW
 
 from app.core.ner_dataset import NERDataset
@@ -6,29 +7,40 @@ from app.core.ner_model import NERModel
 
 
 class NERService:
-    def __init__(self):
-        self.ner_model = NERModel()
+    def __init__(self) -> None:
+        self.ner_model: NERModel = NERModel()
 
-    def align_predictions(self, predictions, word_ids):
-        aligned_labels = []
+    def align_predictions(
+        self,
+        predictions: list[int],
+        word_ids: list[Optional[int]]
+    ) -> list[int]:
+        aligned_labels: list[int] = []
         for idx, word_id in enumerate(word_ids):
             if word_id is None:
-                next
+                continue
             elif idx == 0 or word_id != word_ids[idx - 1]:
                 aligned_labels.append(predictions[word_id])
             else:
-                next
+                continue
         return aligned_labels
 
-    def predict(self, text):
+    def predict(self, text: str) -> list[int]:
         inputs = self.ner_model.encode([text])
-        predictions = self.ner_model.predict(inputs)
+        predictions: list[int] = self.ner_model.predict(inputs)
         encoding = self.ner_model.tokenizer(text, return_tensors="pt")
-        word_ids = encoding.word_ids(batch_index=0)
-        aligned_predictions = self.align_predictions(predictions, word_ids)
+        word_ids: list[Optional[int]] = encoding.word_ids(batch_index=0)
+        aligned_predictions: list[int] = self.align_predictions(
+            predictions, word_ids)
         return aligned_predictions
 
-    def fine_tune(self, texts, labels, epochs=3, ml_model_path="ner_model"):
+    def fine_tune(
+        self,
+        texts: list[list[str]],
+        labels: list[list[int]],
+        epochs: int = 3,
+        ml_model_path: str = "ner_model"
+    ) -> None:
         optimizer = AdamW(self.ner_model.model.parameters(), lr=5e-5)
 
         training_args = TrainingArguments(
@@ -38,7 +50,8 @@ class NERService:
             logging_dir='./logs',
         )
 
-        train_dataset = NERDataset(texts, labels, self.ner_model.tokenizer)
+        train_dataset: NERDataset = NERDataset(
+            texts, labels, self.ner_model.tokenizer)
         trainer = Trainer(
             model=self.ner_model.model,
             args=training_args,
