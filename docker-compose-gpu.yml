@@ -21,6 +21,25 @@ services:
               count: 1
               capabilities: [ gpu ]
 
+  llm:
+    build:
+      context: ./llm
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./llm:/app
+      - ./data:/data
+      - ./models:/models
+    command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --NotebookApp.password='sha1:769d24a18487:56942cc9f2d8cabd200f05e2394954dc544262f6'
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+
   db:
     image: postgres:latest
     env_file:
