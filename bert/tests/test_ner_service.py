@@ -11,15 +11,15 @@ def test_ner_service_predict():
 
     assert isinstance(result, list), "Result should be a list"
     assert all(isinstance(label, int)
-               for label in result), "All items in result should be strings"
+               for label in result), "All items in result should be integers"
 
 
 def test_ner_service_fine_tune():
     ner_service = NERService()
 
     texts = [
-        ["Sunitinib", "is", "a", "tyrosine", "kinase", "inhibitor",],
-        ["This", "is", "another", "example",],
+        ["Sunitinib", "is", "a", "tyrosine", "kinase", "inhibitor"],
+        ["This", "is", "another", "example"],
     ]
     labels = [[1, 2, 2, 0, 0, 0], [0, 0, 0, 0]]
 
@@ -27,13 +27,14 @@ def test_ner_service_fine_tune():
         texts,
         labels,
         epochs=1,
-        ml_model_path='test_ner_service',
+        ml_model_path='/tmp/test_ner_service',
     )
 
-    assert os.path.exists('test_ner_service'), "Model file was not saved"
+    assert os.path.exists(
+        '/tmp/test_ner_service'), "Model directory was not saved"
 
     try:
-        if os.path.exists('test_ner_service'):
-            shutil.rmtree('test_ner_service')
+        if os.path.exists('/tmp/test_ner_service'):
+            shutil.rmtree('/tmp/test_ner_service')
     except FileNotFoundError:
         pass

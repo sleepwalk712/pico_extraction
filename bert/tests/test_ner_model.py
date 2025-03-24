@@ -5,13 +5,17 @@ from app.core.ner_model import NERModel
 
 def test_ner_model():
     ner_model = NERModel()
-    text = "Sunitinib is a tyrosine kinase inhibitor"
-    inputs = ner_model.encode(text)
+    texts = [["Sunitinib", "is", "a", "tyrosine", "kinase", "inhibitor"]]
+    labels = [[1, 2, 2, 0, 0, 0]]
+
+    inputs = ner_model.encode(texts, labels)
 
     assert isinstance(inputs, dict)
     assert isinstance(inputs['input_ids'], torch.Tensor)
+    assert isinstance(inputs['labels'], torch.Tensor)
 
-    outputs = ner_model.predict(inputs)
+    logits = ner_model.predict(inputs)
 
-    assert isinstance(outputs, list)
-    assert all(isinstance(prediction, int) for prediction in outputs)
+    assert isinstance(logits, torch.Tensor)
+    assert logits.size(0) == 1
+    assert logits.size(-1) == ner_model.model.num_labels

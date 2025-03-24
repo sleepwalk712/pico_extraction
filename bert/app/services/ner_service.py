@@ -1,6 +1,7 @@
 from typing import Optional
 from transformers import Trainer, TrainingArguments  # type: ignore
 from torch.optim import AdamW
+import torch
 
 from app.core.ner_dataset import NERDataset
 from app.core.ner_model import NERModel
@@ -8,30 +9,40 @@ from app.core.ner_model import NERModel
 
 class NERService:
     def __init__(self) -> None:
-        self.ner_model: NERModel = NERModel()
+        self.ner_model = NERModel()
 
     def align_predictions(
         self,
-        predictions: list[int],
+        predictions: torch.Tensor,
         word_ids: list[Optional[int]]
     ) -> list[int]:
-        aligned_labels: list[int] = []
+        prediction_labels = predictions.argmax(dim=-1).tolist()[0]
+
+        aligned_labels = []
+        prev_word_id = None
         for idx, word_id in enumerate(word_ids):
-            if word_id is None:
+            if word_id is None or word_id == prev_word_id:
                 continue
-            elif idx == 0 or word_id != word_ids[idx - 1]:
-                aligned_labels.append(predictions[word_id])
-            else:
-                continue
+            aligned_labels.append(prediction_labels[idx])
+            prev_word_id = word_id
+
         return aligned_labels
 
     def predict(self, text: str) -> list[int]:
-        inputs = self.ner_model.encode([text])
-        predictions: list[int] = self.ner_model.predict(inputs)
-        encoding = self.ner_model.tokenizer(text, return_tensors="pt")
-        word_ids: list[Optional[int]] = encoding.word_ids(batch_index=0)
-        aligned_predictions: list[int] = self.align_predictions(
-            predictions, word_ids)
+        tokenized_input = self.ner_model.tokenizer(
+            text.split(),
+            is_split_into_words=True,
+            return_tensors="pt",
+            truncation=True,
+            padding=True,
+            max_length=512,
+        ).to(self.ner_model.device)
+
+        logits = self.ner_model.predict(tokenized_input)
+
+        word_ids = tokenized_input.word_ids(batch_index=0)
+        aligned_predictions = self.align_predictions(logits, word_ids)
+
         return aligned_predictions
 
     def fine_tune(
@@ -50,8 +61,9 @@ class NERService:
             logging_dir='./logs',
         )
 
-        train_dataset: NERDataset = NERDataset(
+        train_dataset = NERDataset(
             texts, labels, self.ner_model.tokenizer)
+
         trainer = Trainer(
             model=self.ner_model.model,
             args=training_args,
