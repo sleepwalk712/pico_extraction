@@ -32,5 +32,8 @@ def test_ner_service_fine_tune():
 
     assert os.path.exists('test_ner_service'), "Model file was not saved"
 
-    if os.path.exists('test_ner_service'):
-        shutil.rmtree('test_ner_service')
+    try:
+        if os.path.exists('test_ner_service'):
+            shutil.rmtree('test_ner_service')
+    except FileNotFoundError:
+        pass

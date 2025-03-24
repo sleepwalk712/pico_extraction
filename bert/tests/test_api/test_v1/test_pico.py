@@ -31,5 +31,8 @@ def test_fine_tune_endpoint():
     assert response.status_code == 200
     assert response.json() == {"message": "Fine-tuning completed successfully"}
 
-    if os.path.exists('test_ner_service'):
-        shutil.rmtree('test_ner_service')
+    try:
+        if os.path.exists('test_ner_service'):
+            shutil.rmtree('test_ner_service')
+    except FileNotFoundError:
+        pass

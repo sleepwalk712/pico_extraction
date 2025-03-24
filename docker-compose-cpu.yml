@@ -2,22 +2,22 @@ version: '3.3'
 services:
   web:
     build:
-      context: ./ner
+      context: ./bert
       dockerfile: Dockerfile.cpu
     depends_on:
       - db
     env_file:
-      - ./ner/.env
+      - ./bert/.env
     ports:
       - "8000:8000"
     volumes:
-      - ./ner:/app
-    command: uvicorn main:app --host 0.0.0.0 --reload
+      - ./bert:/app
+    command: uvicorn main:app --host 0.0.0.0 --reload --reload-dir app
 
   db:
     image: postgres:latest
     env_file:
-      - ./ner/.env
+      - ./bert/.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
