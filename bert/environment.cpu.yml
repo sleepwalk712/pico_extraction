@@ -1,0 +1,14 @@
+name: bert-cpu
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pytorch=2.2
+  - torchvision
+  - cpuonly
+  - llvm-openmp=15
+  - numpy<2
+  - pip
+  - pip:
+      - transformers

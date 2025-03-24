@@ -1,0 +1,15 @@
+name: bert-gpu
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pytorch=2.6
+  - torchvision
+  - pytorch-cuda=11.8
+  - llvm-openmp=15
+  - numpy<2
+  - pip
+  - pip:
+      - transformers
