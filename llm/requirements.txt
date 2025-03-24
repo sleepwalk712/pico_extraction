@@ -4,11 +4,11 @@ wikipedia
 tiktoken
 neo4j
 streamlit
-sentence_transformers==2.2.2
+sentence_transformers
 Pillow
 fastapi
 PyPDF2
-torch==2.0.1
+torch
 uvicorn
 sse-starlette
 boto3
@@ -18,4 +18,13 @@ pypdf
 gpt4all
 chromadb
 langchain-text-splitters
+langchain-chroma
 johnsnowlabs
+langchain
+langchain-core
+langchain-community
+langchain-experimental
+langgraph
+langchain-cli
+langsmith
+faiss-cpu

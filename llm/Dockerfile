@@ -18,7 +18,7 @@ ENV PATH="/usr/local/cuda/bin:${PATH}"
 COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
-RUN CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip install --upgrade --force-reinstall llama-cpp-python --no-cache-dir
+RUN CMAKE_ARGS="-DGGML_CUDA=on" FORCE_CMAKE=1 pip install --upgrade --force-reinstall llama-cpp-python --no-cache-dir
 
 RUN useradd -ms /bin/bash user
 USER user
