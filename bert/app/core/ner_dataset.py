@@ -1,14 +1,10 @@
-from typing import TypedDict, Optional
+from typing import Optional
 
 from torch.utils.data import Dataset
 import torch
 from transformers import PreTrainedTokenizer  # type: ignore
 
-
-class EncodingDict(TypedDict):
-    input_ids: torch.Tensor
-    attention_mask: torch.Tensor
-    labels: torch.Tensor
+from app.core.types import EncodingDict
 
 
 class NERDataset(Dataset):

@@ -3,9 +3,11 @@ from app.models.schemas.predict_request import PredictRequest
 
 def test_predict_request_schema():
     test_data = {
-        "text": "Test text for prediction"
+        "text": "Test text for prediction",
+        "ml_model_path": "ner_model",
     }
 
     request = PredictRequest(**test_data)
 
     assert request.text == "Test text for prediction"
+    assert request.ml_model_path == "ner_model"

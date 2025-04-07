@@ -1,18 +1,30 @@
-from typing import Optional
+import os
+
 from transformers import AutoTokenizer, AutoModelForTokenClassification  # type: ignore
 import torch
 
 
 class NERModel:
-    def __init__(self, ml_model_path: Optional[str] = None) -> None:
+    def __init__(self, model_path: str, num_labels: int = 5) -> None:
         self.device = torch.device(
-            'cuda' if torch.cuda.is_available() else 'cpu')
-        model_path = ml_model_path if ml_model_path else 'michiyasunaga/BioLinkBERT-base'
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
-        self.model = AutoModelForTokenClassification.from_pretrained(
-            model_path, num_labels=5).to(self.device)
+            'cuda' if torch.cuda.is_available() else 'cpu'
+        )
 
-    def encode(self, texts: list[list[str]], labels: Optional[list[list[int]]] = None) -> dict[str, torch.Tensor]:
+        if os.path.isdir(model_path) and os.path.exists(os.path.join(model_path, 'config.json')):
+            self.tokenizer = AutoTokenizer.from_pretrained(model_path)
+            self.model = AutoModelForTokenClassification.from_pretrained(
+                model_path).to(self.device)
+        else:
+            print(
+                f"Model not found at {model_path}, loading from Hugging Face..."
+            )
+            base_model = 'michiyasunaga/BioLinkBERT-base'
+            self.tokenizer = AutoTokenizer.from_pretrained(base_model)
+            self.model = AutoModelForTokenClassification.from_pretrained(
+                base_model, num_labels=num_labels).to(self.device)
+            self.save_model(model_path)
+
+    def encode_for_inference(self, texts: list[str]) -> dict[str, torch.Tensor]:
         encoding = self.tokenizer(
             texts,
             is_split_into_words=True,
@@ -22,30 +34,10 @@ class NERModel:
             return_tensors="pt",
         ).to(self.device)
 
-        inputs = {
+        return {
             'input_ids': encoding['input_ids'],
             'attention_mask': encoding['attention_mask'],
         }
-
-        if labels is not None:
-            label_ids_batch = []
-            for i, label in enumerate(labels):
-                word_ids = encoding.word_ids(batch_index=i)
-                label_ids = []
-                previous_word_idx = None
-                for word_idx in word_ids:
-                    if word_idx is None:
-                        label_ids.append(-100)
-                    elif word_idx != previous_word_idx:
-                        label_ids.append(label[word_idx])
-                    else:
-                        label_ids.append(-100)
-                    previous_word_idx = word_idx
-                label_ids_batch.append(label_ids)
-
-            inputs['labels'] = torch.tensor(label_ids_batch).to(self.device)
-
-        return inputs
 
     def predict(self, inputs: dict[str, torch.Tensor]) -> torch.Tensor:
         with torch.no_grad():

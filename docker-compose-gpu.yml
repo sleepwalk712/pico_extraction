@@ -22,6 +22,7 @@ services:
               capabilities: [ gpu ]
 
   llm:
+    profiles: [ "llms" ]
     build:
       context: ./llm
       dockerfile: Dockerfile
@@ -41,6 +42,7 @@ services:
               capabilities: [ gpu ]
 
   llamacpp:
+    profiles: [ "llms" ]
     image: ghcr.io/ggerganov/llama.cpp:server-cuda
     ports:
       - "8001:8001"
