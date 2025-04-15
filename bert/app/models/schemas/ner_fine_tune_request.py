@@ -3,7 +3,7 @@ from typing import List
 from pydantic import BaseModel
 
 
-class FineTuneRequest(BaseModel):
+class NerFineTuneRequest(BaseModel):
     texts: List[List[str]]
     labels: List[List[int]]
     epochs: int = 3

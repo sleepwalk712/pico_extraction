@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException
 
 from app.services.ner_service import NERService
-from app.models.schemas import PredictRequest, FineTuneRequest
+from app.models.schemas import NerPredictRequest, NerFineTuneRequest
 
 router = APIRouter()
 
 
 @router.post("/predict", response_model=dict[str, list[int]])
-async def predict(request: PredictRequest) -> dict[str, list[int]]:
+async def predict(request: NerPredictRequest) -> dict[str, list[int]]:
     try:
         if not request.ml_model_path:
             raise HTTPException(
@@ -22,7 +22,7 @@ async def predict(request: PredictRequest) -> dict[str, list[int]]:
 
 
 @router.post("/fine_tune", response_model=dict[str, str])
-async def fine_tune(request: FineTuneRequest) -> dict[str, str]:
+async def fine_tune(request: NerFineTuneRequest) -> dict[str, str]:
     try:
         if not request.ml_model_path:
             raise HTTPException(

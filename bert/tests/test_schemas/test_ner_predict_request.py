@@ -1,13 +1,13 @@
-from app.models.schemas.predict_request import PredictRequest
+from app.models.schemas import NerPredictRequest
 
 
-def test_predict_request_schema():
+def test_ner_predict_request_schema():
     test_data = {
         "text": "Test text for prediction",
         "ml_model_path": "ner_model",
     }
 
-    request = PredictRequest(**test_data)
+    request = NerPredictRequest(**test_data)
 
     assert request.text == "Test text for prediction"
     assert request.ml_model_path == "ner_model"
