@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 
-from app.api.v1 import pico
+from app.api.v1 import ner
+from app.api.v1 import classification
 
 
 app = FastAPI()
 
-app.include_router(pico.router, prefix="/v1/pico")
+app.include_router(ner.router, prefix="/v1")
+app.include_router(classification.router, prefix="/v1")
 
 
 @app.get("/")

@@ -1,12 +1,12 @@
 import os
 import shutil
 
-from app.services.ner_service import NERService
+from app.services.ner_service import NerService
 
 
 def test_ner_service_predict():
     model_path = "/tmp/test_ner_service"
-    ner_service = NERService(model_path=model_path)
+    ner_service = NerService(model_path=model_path)
 
     text = "Sunitinib is a tyrosine kinase inhibitor"
     result = ner_service.predict(text)
@@ -17,7 +17,7 @@ def test_ner_service_predict():
 
 def test_ner_service_fine_tune():
     model_path = "/tmp/test_ner_service"
-    ner_service = NERService(model_path=model_path)
+    ner_service = NerService(model_path=model_path)
 
     texts = [
         ["Sunitinib", "is", "a", "tyrosine", "kinase", "inhibitor"],

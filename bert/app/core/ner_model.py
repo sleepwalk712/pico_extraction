@@ -4,7 +4,7 @@ from transformers import AutoTokenizer, AutoModelForTokenClassification  # type:
 import torch
 
 
-class NERModel:
+class NerModel:
     def __init__(self, model_path: str, num_labels: int = 5) -> None:
         self.device = torch.device(
             'cuda' if torch.cuda.is_available() else 'cpu'

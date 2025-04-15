@@ -7,7 +7,7 @@ from transformers import PreTrainedTokenizer  # type: ignore
 from app.core.types import EncodingDict
 
 
-class NERDataset(Dataset):
+class NerDataset(Dataset):
     def __init__(
         self,
         texts: list[list[str]],

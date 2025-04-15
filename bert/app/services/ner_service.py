@@ -5,14 +5,14 @@ from transformers import Trainer, TrainingArguments  # type: ignore
 from torch.optim import AdamW
 import torch
 
-from app.core.ner_dataset import NERDataset
-from app.core.ner_model import NERModel
+from app.core.ner_dataset import NerDataset
+from app.core.ner_model import NerModel
 
 
-class NERService:
+class NerService:
     def __init__(self, model_path: str) -> None:
         self.model_path = model_path
-        self.ner_model = NERModel(model_path=model_path)
+        self.ner_model = NerModel(model_path=model_path)
 
     def align_predictions(
         self,
@@ -52,12 +52,12 @@ class NERService:
             texts, labels, test_size=validation_split, random_state=42
         )
 
-        train_dataset = NERDataset(
+        train_dataset = NerDataset(
             train_texts,
             train_labels,
             self.ner_model.tokenizer,
         )
-        val_dataset = NERDataset(
+        val_dataset = NerDataset(
             val_texts,
             val_labels,
             self.ner_model.tokenizer,

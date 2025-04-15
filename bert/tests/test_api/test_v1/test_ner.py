@@ -16,7 +16,7 @@ def test_predict_endpoint():
         "text": "Test text for prediction",
         "ml_model_path": MODEL_PATH,
     }
-    response = client.post("/v1/pico/predict", json=request_data)
+    response = client.post("/v1/ner/predict", json=request_data)
 
     assert response.status_code == 200
     assert "predictions" in response.json()
@@ -30,7 +30,7 @@ def test_fine_tune_endpoint():
         "epochs": 3,
         "ml_model_path": MODEL_PATH
     }
-    response = client.post("/v1/pico/fine_tune", json=request_data)
+    response = client.post("/v1/ner/fine_tune", json=request_data)
 
     assert response.status_code == 200
     assert response.json() == {"message": "Fine-tuning completed successfully"}

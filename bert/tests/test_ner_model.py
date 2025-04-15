@@ -1,10 +1,10 @@
 import torch
 
-from app.core.ner_model import NERModel
+from app.core.ner_model import NerModel
 
 
 def test_ner_model():
-    ner_model = NERModel(model_path="/tmp/test_ner_model")
+    ner_model = NerModel(model_path="/tmp/test_ner_model")
     texts = ["Sunitinib", "is", "a", "tyrosine", "kinase", "inhibitor"]
 
     inputs = ner_model.encode_for_inference(texts)

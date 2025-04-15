@@ -1,7 +1,7 @@
 import pytest
 import torch
 
-from app.core.ner_dataset import NERDataset
+from app.core.ner_dataset import NerDataset
 
 
 class MockEncoding:
@@ -35,7 +35,7 @@ def mock_tokenizer():
 def ner_dataset(mock_tokenizer):
     texts = [['Hello', 'world', '!'], ['Another', 'sentence']]
     labels = [[1, 0, 1], [0, 1]]
-    return NERDataset(texts=texts, labels=labels, tokenizer=mock_tokenizer, max_length=5)
+    return NerDataset(texts=texts, labels=labels, tokenizer=mock_tokenizer, max_length=5)
 
 
 def test_ner_dataset_getitem(ner_dataset):
