@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 
 from sklearn.model_selection import train_test_split  # type: ignore
@@ -11,8 +12,8 @@ from app.core.ner_model import NerModel
 
 class NerService:
     def __init__(self, model_path: str) -> None:
-        self.model_path = model_path
-        self.ner_model = NerModel(model_path=model_path)
+        self.ner_model_dir = os.path.join("ner_models", model_path)
+        self.ner_model = NerModel(model_path=self.ner_model_dir)
 
     def align_predictions(
         self,
@@ -66,7 +67,7 @@ class NerService:
         optimizer = AdamW(self.ner_model.model.parameters(), lr=5e-5)
 
         training_args = TrainingArguments(
-            output_dir=self.model_path,
+            output_dir=self.ner_model_dir,
             per_device_train_batch_size=32,
             num_train_epochs=epochs,
             logging_dir='./logs',
@@ -85,4 +86,4 @@ class NerService:
         )
 
         trainer.train()
-        self.ner_model.save_model(self.model_path)
+        self.ner_model.save_model(self.ner_model_dir)

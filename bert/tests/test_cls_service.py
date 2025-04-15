@@ -40,10 +40,10 @@ def test_cls_service_fine_tune():
         validation_split=0.5,
     )
 
-    assert os.path.exists(model_path)
+    assert os.path.exists(os.path.join("classification_model", model_path))
 
     try:
-        if os.path.exists(model_path):
-            shutil.rmtree(model_path)
+        if os.path.exists(os.path.join("classification_model", model_path)):
+            shutil.rmtree(os.path.join("classification_model", model_path))
     except FileNotFoundError:
         pass

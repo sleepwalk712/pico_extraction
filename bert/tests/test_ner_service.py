@@ -31,10 +31,10 @@ def test_ner_service_fine_tune():
         epochs=1,
     )
 
-    assert os.path.exists('/tmp/test_ner_service')
+    assert os.path.exists(os.path.join("ner_model", model_path))
 
     try:
-        if os.path.exists('/tmp/test_ner_service'):
-            shutil.rmtree('/tmp/test_ner_service')
+        if os.path.exists(os.path.join("ner_model", model_path)):
+            shutil.rmtree(os.path.join("ner_model", model_path))
     except FileNotFoundError:
         pass

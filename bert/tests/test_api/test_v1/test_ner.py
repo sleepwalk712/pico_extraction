@@ -37,5 +37,5 @@ def test_fine_tune_endpoint():
 
 
 def teardown_module(module):
-    if os.path.exists(MODEL_PATH):
-        shutil.rmtree(MODEL_PATH)
+    if os.path.exists(os.path.join("ner_model", MODEL_PATH)):
+        shutil.rmtree(os.path.join("ner_model", MODEL_PATH))

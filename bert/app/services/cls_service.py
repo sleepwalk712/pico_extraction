@@ -1,3 +1,5 @@
+import os
+
 from sklearn.model_selection import train_test_split  # type: ignore
 from transformers import Trainer, TrainingArguments  # type: ignore
 from torch.optim import AdamW
@@ -8,9 +10,9 @@ from app.core.cls_model import ClassificationModel
 
 class ClassificationService:
     def __init__(self, model_path: str, num_labels: int = 2) -> None:
-        self.model_path = model_path
+        self.cls_model_dir = os.path.join("classification_models", model_path)
         self.cls_model = ClassificationModel(
-            model_path=model_path, num_labels=num_labels)
+            model_path=self.cls_model_dir, num_labels=num_labels)
 
     def predict(self, text: str) -> int:
         tokenized_input = self.cls_model.encode_for_inference(text)
@@ -48,7 +50,7 @@ class ClassificationService:
 
         optimizer = AdamW(self.cls_model.model.parameters(), lr=5e-5)
         training_args = TrainingArguments(
-            output_dir=self.model_path,
+            output_dir=self.cls_model_dir,
             per_device_train_batch_size=32,
             num_train_epochs=epochs,
             logging_dir='./logs',
@@ -67,4 +69,4 @@ class ClassificationService:
         )
 
         trainer.train()
-        self.cls_model.save_model(self.model_path)
+        self.cls_model.save_model(self.cls_model_dir)
